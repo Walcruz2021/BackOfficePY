@@ -11,3 +11,7 @@
 .inputField{
     margin: 10px;
 }
+
+.containerInputGral Field{ 
+    display: block;
+}
