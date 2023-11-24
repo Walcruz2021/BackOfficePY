@@ -3,6 +3,7 @@ import { Formik, Field, ErrorMessage, Form } from "formik";
 import Swal from "sweetalert2";
 import { addNote } from "../reducer/actions";
 import { useDispatch } from "react-redux";
+import "./formAddNote.css"
 
 function formAddNote() {
   const dispatch = useDispatch();
@@ -12,7 +13,6 @@ function formAddNote() {
   const [stateImgArray, setStateImgArray] = useState([
     {
       id: 1,
-      //value: "inputImg1",
       type: "text",
       name: "img1",
       placeholder: "img1",
@@ -23,7 +23,6 @@ function formAddNote() {
   const [inputElements, setInputElements] = useState([
     {
       id: 1,
-      //value: "inputTitle1",
       type: "text",
       name: "title1",
       placeholder: "title1",
@@ -31,7 +30,6 @@ function formAddNote() {
     },
     {
       id: 2,
-      //value: "inputParagraph1",
       type: "text",
       name: "paragraph1",
       placeholder: "paragraph1",
@@ -39,7 +37,6 @@ function formAddNote() {
     },
     {
       id: 3,
-      //value: "inputImg1",
       type: "text",
       name: "img1",
       placeholder: "img1",
@@ -54,19 +51,14 @@ function formAddNote() {
     cantTitle: 1,
   });
   const [arrayImg, setArrayImg] = useState([]);
+ 
   const [copyValues, setCopyValues] = useState();
-console.log(copyValues,"COPY")
+
   const handleInputClick = (index) => {
     setActiveInputIndex(index);
-    //console.log(index,"position")
+  
   };
 
-  // function addInputImg(prop){
-  //   setArrayImg((prevImages) => [
-  //     ...prevImages,
-  //     { [prop]:prop},
-  //   ]);
-  // }
 
   function addInput(prop) {
     if (activeInputIndex !== null) {
@@ -77,11 +69,11 @@ console.log(copyValues,"COPY")
         }));
         const newInput = {
           id: inputElements.length + 1,
-          //value: `InputParagraph ${inputElements.length + 1}`,
           name: `paragraph${stateCantInput.cantParagraph + 1}`,
           placeholder: `paragraph${stateCantInput.cantParagraph + 1}`,
           type: "text",
           typeInput: "paragraph",
+          as:"textarea"
         };
 
         const updatedElements = [...inputElements];
@@ -96,7 +88,6 @@ console.log(copyValues,"COPY")
         }));
         const newInput = {
           id: inputElements.length + 1,
-          //value: `InputImg ${inputElements.length + 1}`,
           name: `img${stateCantInput.cantImg + 1}`,
           placeholder: `img${stateCantInput.cantImg + 1}`,
           type: "text",
@@ -105,7 +96,6 @@ console.log(copyValues,"COPY")
 
         const newInputImg = {
           id: inputElements.length + 1,
-          //value: `InputImg ${inputElements.length + 1}`,
           name: `img${stateCantInput.cantImg + 1}`,
           placeholder: `img${stateCantInput.cantImg + 1}`,
           type: "file",
@@ -120,7 +110,6 @@ console.log(copyValues,"COPY")
         const arrayElementsImg = [...stateImgArray];
         arrayElementsImg.splice(arrayElementsImg.length, 0, newInputImg);
         setStateImgArray(arrayElementsImg);
-        //addInputImg(`img${stateCantInput.cantImg + 1}`)
       } else {
         setStateCantInput((prevState) => ({
           ...prevState,
@@ -128,7 +117,6 @@ console.log(copyValues,"COPY")
         }));
         const newInput = {
           id: inputElements.length + 1,
-          //value: `InputTiTle ${inputElements.length + 1}`,
           name: `title${stateCantInput.cantTitle + 1}`,
           placeholder: `title${stateCantInput.cantTitle + 1}`,
           type: "text",
@@ -162,9 +150,18 @@ console.log(copyValues,"COPY")
         setInputElements(updatedElements);
         setActiveInputIndex(null);
       } else if (prop === "img") {
+      
         const updatedElements = [...inputElements];
+        const name=updatedElements[activeInputIndex].name;
         updatedElements.splice(activeInputIndex, 1);
         setInputElements(updatedElements);
+        
+        //delete array's images in the container of images
+        const arrayDeleted=stateImgArray.filter((img)=>{
+          //updatedElements[activeInputIndex]?console.log(updatedElements[activeInputIndex-1].name):null
+          return img.name!==name
+        }) 
+        setStateImgArray(arrayDeleted)
         setActiveInputIndex(null);
       } else {
         const updatedElements = [...inputElements];
@@ -180,7 +177,7 @@ console.log(copyValues,"COPY")
   //state that have link's image uppload img1, img2, etc
   const [image, setImage] = useState([]);
 
-  //en este caso como es una funcion que recibe un parametro se realiza una funcion que devuelva otra funcion
+  //In this case as is function that receives a prop,  ejecuted function that return other functions 
   const uploadtoServer = (prop) => {
     return async (e) => {
       const imageFile = e.target.files[0];
@@ -213,7 +210,7 @@ console.log(copyValues,"COPY")
             if (copyValues[key2] && Object.keys(img)[0] === copyValues[key2]) {
                copyValues[key2]=img[Object.keys(img)[0]]
             }
-          //copyValues[key2],"valor ingresado en el input")
+          //copyValues[key2],"value ingresed in the input")
           console.log(img[Object.keys(img)[0]],"sprint image's links")
           //console.log(Object.keys(img)[0]) //sprint name farm of image array
         });
@@ -222,7 +219,7 @@ console.log(copyValues,"COPY")
     return cant;
   };
   
-  console.log(mergeInput(), "xxx");
+  
   function filterInputs(valueInput) {
     setCopyValues(valueInput);
     mergeInput();
@@ -266,7 +263,7 @@ console.log(copyValues,"COPY")
         onSubmit={(values, { resetForm }) => {
           //console.log(values);
           filterInputs(values);
-          //dispatch(addNote(values));
+          dispatch(addNote(values));
           MySwal.fire({
             title: "¡Nota Creada Correctamente!",
             icon: "success",
@@ -295,7 +292,7 @@ console.log(copyValues,"COPY")
           <Form onSubmit={handleSubmit}>
             {inputElements.map((input, index) =>
               input.typeInput === "img" ? (
-                <Field
+                <Field className="inputImg"
                   key={input.id}
                   onClick={() => {
                     handleInputClick(index), setStateType(input.typeInput);
@@ -305,7 +302,7 @@ console.log(copyValues,"COPY")
                   placeholder={input.placeholder}
                 />
               ) : (
-                <Field
+                <Field className="inputField"
                   key={input.id}
                   // value={input.value}
                   onClick={() => {
@@ -314,6 +311,7 @@ console.log(copyValues,"COPY")
                   name={input.name}
                   placeholder={input.placeholder}
                   type={input.type}
+                  as="textarea"
                 />
               )
             )}
@@ -324,15 +322,12 @@ console.log(copyValues,"COPY")
               component={() => <div className="error">{errors.input.value}</div>}
             ></ErrorMessage> */}
 
-            <button type="submit">Agregar Informacion</button>
-          </Form>
-        )}
-      </Formik>
-      <div>
+<div container className="containerImg">
+        <h2>UPLOAD IMAGE</h2>
         {stateImgArray
           ? stateImgArray.map((inputImg) => {
               return (
-                <input
+                <input className="inputImg"
                   name={inputImg.name}
                   type="file"
                   onChange={uploadtoServer(inputImg.name)}
@@ -341,6 +336,12 @@ console.log(copyValues,"COPY")
             })
           : null}
       </div>
+      
+            <button type="submit">Agregar Informacion</button>
+          </Form>
+        )}
+      </Formik>
+      
     </>
   );
 }
