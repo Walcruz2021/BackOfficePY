@@ -1,3 +1,16 @@
+.containerAddNote{
+    width: 100%;
+}
+
+.containerInputGral{
+    border: 2px solid #FF0000;
+}
+
+.containerInputGral Field{ 
+    display: block;
+    width: 100%;
+}
+
 .containerImg{
     background-color: aqua;
     padding: 1rem;
@@ -8,10 +21,15 @@
     margin: 10px;
 }
 
-.inputField{
+.inputFieldTitle{
     margin: 10px;
+    width: 80%;
+    height: 2rem;
 }
 
-.containerInputGral Field{ 
-    display: block;
+.inputFieldParag{
+    margin: 10px;
+    width: 80%;
+    height: 7rem;
 }
+

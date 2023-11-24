@@ -20,6 +20,7 @@ function formAddNote() {
     },
   ]);
 
+  
   //state updated inputElements because it would have to have a default element
   const [inputElements, setInputElements] = useState([
     {
@@ -56,8 +57,9 @@ function formAddNote() {
   });
   //const [arrayImg, setArrayImg] = useState([]);
 
-  //This state is copy of inputElements (array of inputs inserted)
+  //This state is copy of inputElements (array of inputs inserted). will have farm with link's image updated
   const [copyValues, setCopyValues] = useState();
+
 
   //function that updated activeInputIndex every time click in input. If activeInputIndex > 0 then is because make click in the input
   const handleInputClick = (index) => {
@@ -204,8 +206,9 @@ function formAddNote() {
   };
 
   const mergeInput = () => {
-    var cant = 0;
+
     if (stateImgArray && copyValues) {
+      var cant = 0;
       image.forEach((img) => {
         Object.keys(copyValues).forEach((key2) => {
           if (copyValues[key2] && Object.keys(img)[0] === copyValues[key2]) {
@@ -218,6 +221,7 @@ function formAddNote() {
       });
     }
     return cant;
+  
   };
 
   function filterInputs(valueInput) {
@@ -226,7 +230,7 @@ function formAddNote() {
   }
 
   return (
-    <>
+    <div className="containerAddNote">
       <h1>Dynamic Inputs</h1>
       <button onClick={() => addInput("title")}>Add Input Title</button>
       <button onClick={() => addInput("paragraph")}>Add Input Paragraph</button>
@@ -307,7 +311,7 @@ function formAddNote() {
               ) : input.typeInput === "title" ? (
                 <div>
                   <Field
-                    className="inputField"
+                    className="inputFieldTitle"
                     key={input.id}
                     // value={input.value}
                     onClick={() => {
@@ -321,7 +325,7 @@ function formAddNote() {
               ) : (
                 <div>
                   <Field
-                    className="inputField"
+                    className="inputFieldParag"
                     key={input.id}
                     // value={input.value}
                     onClick={() => {
@@ -357,12 +361,11 @@ function formAddNote() {
                   })
                 : null}
             </div>
-
             <button type="submit">Agregar Informacion</button>
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 }
 
